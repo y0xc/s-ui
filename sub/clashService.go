@@ -194,7 +194,8 @@ func (s *ClashService) ConvertToClashMeta(outbounds *[]map[string]interface{}, b
 			proxy["password"] = obMap["password"]
 			if tls, ok := obMap["tls"].(map[string]interface{}); ok {
 				proxy["sni"] = tls["server_name"]
-				proxy["skip-cert-verify"] = tls["insecure"]
+				// proxy["skip-cert-verify"] = tls["insecure"]
+				proxy["skip-cert-verify"], _ = tls["insecure"].(bool)
 			}
 		case "shadowsocks":
 			proxy["type"] = "ss"
@@ -216,7 +217,8 @@ func (s *ClashService) ConvertToClashMeta(outbounds *[]map[string]interface{}, b
 			case "vmess", "vless":
 				proxy["udp"] = true
 				proxy["packet-encoding"] = "xudp"
-			case "trojan", "ss", "socks5":
+			// case "trojan", "ss", "socks5":
+			case "trojan", "ss", "socks5", "anytls":
 				proxy["udp"] = true
 			}
 		}
